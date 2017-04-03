@@ -1,0 +1,82 @@
+###
+### Lets begin by installing all the required applications
+###
+
+sudo apt install mongodb build-essential automake python python-dev python-dpkt python-jinja2 python-pip python-dev python-magic python-pymongo python-gridfs python-libvirt python-bottle python-pefile python-chardet libxml2-dev libxslt1-dev libfuzzy-dev libffi-dev libssl-dev libxml2-dev libxslt-dev libjpeg-dev git tcpdump libcap2-bin libtool-bin libjansson-dev libmagic-dev
+
+### Now that is out of the way lets install the python based requirements via pip
+sudo pip install cybox==2.0.1.4 
+## install this first to not cause a failure for maec
+sudo pip install maec==4.0.1.0 alembic==0.8.0 beautifulsoup4==4.4.1 cffi==1.6.0 chardet==2.3.0 cryptography==1.3.2 Django==1.8.4 dpkt==1.8.7 ecdsa==0.13 elasticsearch==2.2.0 enum34==1.0.4 Flask==0.10.1 HTTPReplay==0.1.18 idna==2.0 ipaddress==1.0.14 itsdangerous==0.24 Jinja2==2.8 jsbeautifier==1.5.10 lxml==3.6.0 Mako==1.0.1 MarkupSafe==0.23 ndg-httpsclient==0.4.0 oletools==0.42 peepdf==0.3.2 pefile2==1.2.11 pyasn1==0.1.8 pycparser==2.14 pymisp==2.4.54 pymongo==3.0.3 pyOpenSSL==0.15.1 python-dateutil==2.4.2 python-editor==0.3 python-magic==0.4.6 requests==2.7.0 six==1.9.0 SQLAlchemy==1.0.8 tlslite-ng==0.6.0-alpha3 wakeonlan==0.2.2 Werkzeug==0.10.4 openpyxl ujson jupyter
+
+### TCPDUMP
+sudo apt install tcpdump libcap2-bin
+## set it so non root users can grab full packets
+sudo setcap cap_net_raw,cap_net_admin=eip /usr/sbin/tcpdump
+getcap /usr/sbin/tcpdump
+## Output Must = /usr/sbin/tcpdump = cap_net_admin,cap_net_raw+eip
+
+### Volatility
+git clone https://github.com/volatilityfoundation/volatility.git
+cd volatility
+sudo python setup.py install
+
+### Pydeep and distorm3
+sudo pip install pydeep distorm3
+
+### YARA
+wget https://github.com/VirusTotal/yara/archive/v3.5.0.zip
+unzip v3.5.0.zip
+cd yara-3.5.0
+./bootstrap.sh
+./configure --with-crypto --enable-magic --enable-cuckoo
+make
+sudo make install
+sudo pip install yara-python
+
+### PYCRYPTO
+wget https://pypi.python.org/packages/60/db/645aa9af249f059cc3a368b118de33889219e0362141e75d4eaf6f80f163/pycrypto-2.6.1.tar.gz
+tar -xvzf pycrypto-2.6.1.tar.gz 
+cd pycrypto-2.6.1
+python setup.py build
+sudo python setup.py install
+
+### CUCKOO
+download from website
+cd Downloads
+tar -xvzf cuckoo-current.tar.gz 
+
+### MITMPROXY
+sudo apt-get install python3-pip python3-dev libssl-dev libtiff5-dev libjpeg8-dev zlib1g-dev libwebp-dev
+sudo pip3 install mitmproxy
+mitmproxy
+## Once running control-c and press y to exit
+cd ~/.mitmproxy
+cp mitmproxy-ca-cert.p12 /home/<user>/Downloads/cuckoo/analyzer/windows/bin/cert.p12 
+mitmdump = /usr/local/bin/mitmdump
+## control-c to end
+
+### VIRTUALBOX
+wget http://download.virtualbox.org/virtualbox/5.1.18/virtualbox-5.1_5.1.18-114002~Ubuntu~xenial_amd64.deb
+sudo dpkg -i virtualbox-5.1_5.1.18-114002~Ubuntu~xenial_amd64.deb
+sudo apt-get install -f 
+
+### NETWORKING
+sudo iptables -A FORWARD -o eth0 -i vboxnet0 -s 192.168.56.0/24 -m conntrack --ctstate NEW -j ACCEPT;  
+sudo iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT;  
+sudo iptables -A POSTROUTING -t nat -j MASQUERADE;  
+sudo sysctl -w net.ipv4.ip_forward=1; 
+
+
+### Forget this stuff below, it's too much of a ballache.
+### VMPLAYER
+sudo chmod u+x VMware-Player-12.5.5-5234757.x86_64.bundle 
+sudo ./VMware-Player-12.5.5-5234757.x86_64.bundle
+
+
+
+
+
+
+
+
