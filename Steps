@@ -51,8 +51,7 @@ sudo apt-get install python3-pip python3-dev libssl-dev libtiff5-dev libjpeg8-de
 sudo pip3 install mitmproxy
 mitmproxy
 ## Once running control-c and press y to exit
-cd ~/.mitmproxy
-cp mitmproxy-ca-cert.p12 ~/cuckoo/analyzer/windows/bin/cert.p12 
+cp ~/.mitmproxy/mitmproxy-ca-cert.p12 ~/cuckoo/analyzer/windows/bin/cert.p12 
 mitmdump = /usr/local/bin/mitmdump
 ## control-c to end
 
