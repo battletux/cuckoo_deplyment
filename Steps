@@ -59,6 +59,7 @@ mitmdump = /usr/local/bin/mitmdump
 wget http://download.virtualbox.org/virtualbox/5.1.18/virtualbox-5.1_5.1.18-114002~Ubuntu~xenial_amd64.deb
 sudo dpkg -i virtualbox-5.1_5.1.18-114002~Ubuntu~xenial_amd64.deb
 sudo apt-get install -f 
+sudo usermod -aG vboxusers <user>
 
 ### NETWORKING
 sudo iptables -A FORWARD -o eth0 -i vboxnet0 -s 192.168.56.0/24 -m conntrack --ctstate NEW -j ACCEPT;  
